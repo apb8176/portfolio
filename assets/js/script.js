@@ -69,6 +69,59 @@ for (let i = 0; i < copyButtons.length; i++) {
 
 
 
+// gallery image preview
+const galleryItems = document.querySelectorAll("[data-gallery-item]");
+const galleryModal = document.querySelector("[data-gallery-modal]");
+const galleryPreview = document.querySelector("[data-gallery-preview]");
+const galleryPreviewCaption = document.querySelector("[data-gallery-preview-caption]");
+const galleryCloseBtn = document.querySelector("[data-gallery-close]");
+let lastGalleryTrigger;
+
+const closeGallery = function () {
+  if (!galleryModal) return;
+
+  galleryModal.classList.remove("active");
+  galleryModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("gallery-open");
+  if (lastGalleryTrigger) lastGalleryTrigger.focus();
+};
+
+const openGallery = function (item) {
+  if (!galleryModal || !galleryPreview || !galleryPreviewCaption) return;
+
+  const image = item.querySelector("img");
+  if (!image) return;
+
+  lastGalleryTrigger = item;
+  galleryPreview.src = image.src;
+  galleryPreview.alt = image.alt;
+  galleryPreviewCaption.textContent = item.dataset.galleryCaption || image.alt;
+  galleryModal.classList.add("active");
+  galleryModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("gallery-open");
+  if (galleryCloseBtn) galleryCloseBtn.focus();
+};
+
+for (let i = 0; i < galleryItems.length; i++) {
+  galleryItems[i].addEventListener("click", function () { openGallery(this); });
+}
+
+if (galleryCloseBtn) galleryCloseBtn.addEventListener("click", closeGallery);
+
+if (galleryModal) {
+  galleryModal.addEventListener("click", function (event) {
+    if (event.target === galleryModal) closeGallery();
+  });
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && galleryModal && galleryModal.classList.contains("active")) {
+    closeGallery();
+  }
+});
+
+
+
 // testimonials variables
 const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
 const modalContainer = document.querySelector("[data-modal-container]");
