@@ -16,6 +16,59 @@ sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); }
 
 
 
+// copy email and phone details without opening another application
+const copyButtons = document.querySelectorAll("[data-copy-value]");
+const copySnackbar = document.querySelector("[data-copy-snackbar]");
+let snackbarTimer;
+
+const fallbackCopy = function (value) {
+  const textArea = document.createElement("textarea");
+  textArea.value = value;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.select();
+  textArea.setSelectionRange(0, textArea.value.length);
+
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textArea);
+
+  if (!copied) throw new Error("Copy command was unsuccessful");
+};
+
+const copyToClipboard = async function (value) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(value);
+  } else {
+    fallbackCopy(value);
+  }
+};
+
+const showCopySnackbar = function (message) {
+  if (!copySnackbar) return;
+
+  window.clearTimeout(snackbarTimer);
+  copySnackbar.textContent = message;
+  copySnackbar.classList.add("active");
+  snackbarTimer = window.setTimeout(function () {
+    copySnackbar.classList.remove("active");
+  }, 2200);
+};
+
+for (let i = 0; i < copyButtons.length; i++) {
+  copyButtons[i].addEventListener("click", async function () {
+    try {
+      await copyToClipboard(this.dataset.copyValue);
+      showCopySnackbar("Copied to clipboard");
+    } catch (error) {
+      showCopySnackbar("Could not copy. Please copy manually.");
+    }
+  });
+}
+
+
+
 // testimonials variables
 const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
 const modalContainer = document.querySelector("[data-modal-container]");

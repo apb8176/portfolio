@@ -436,6 +436,26 @@ main {
   font-size: var(--fs-7);
 }
 
+.contact-info .contact-link {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  color: var(--white-2);
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-overflow: clip;
+  line-height: 1.45;
+}
+
+.contact-info .contact-link:hover,
+.contact-info .contact-link:focus-visible,
+.social-item .social-link:hover,
+.social-item .social-link:focus-visible {
+  color: var(--orange-yellow-crayola);
+}
+
 .contact-info address { font-style: normal; }
 
 .social-list {
@@ -454,6 +474,37 @@ main {
 
 
 .social-item .social-link:hover { color: var(--light-gray); }
+
+.copy-snackbar {
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  z-index: 100;
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  border: 1px solid var(--jet);
+  border-radius: 10px;
+  background: var(--eerie-black-1);
+  color: var(--white-2);
+  box-shadow: var(--shadow-3);
+  font-size: var(--fs-6);
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.copy-snackbar.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+@media (min-width: 1250px) {
+  .copy-snackbar { bottom: 32px; }
+}
 
 
 
@@ -1870,9 +1921,11 @@ textarea.form-input::-webkit-resizer { display: none; }
   .contacts-list { grid-template-columns: 1fr; }
 
   .contact-info :is(.contact-link) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-overflow: clip;
   }
 
   .contact-info :is(.contact-link, time, address) {
