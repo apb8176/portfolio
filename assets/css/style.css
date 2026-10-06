@@ -1327,6 +1327,7 @@ body.gallery-open { overflow: hidden; }
   position: relative;
   height: 250px;
   width: 100%;
+  margin-top: 15px;
   border-radius: 16px;
   margin-bottom: 30px;
   border: 1px solid var(--jet);
